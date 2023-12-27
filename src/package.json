@@ -1,0 +1,23 @@
+{
+  "name": "eanalytics-reactnative",
+  "version": "1.0.0",
+  "description": "ReactNative SDK for Eulerian Analytics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EulerianTechnologies/eanalytics-react-native.git"
+  },
+  "keywords": [
+    "eanalytics",
+    "eulerian"
+  ],
+  "author": "EulerianTechnologies",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EulerianTechnologies/eanalytics-react-native/issues"
+  },
+  "homepage": "https://github.com/EulerianTechnologies/eanalytics-react-native#readme"
+}
