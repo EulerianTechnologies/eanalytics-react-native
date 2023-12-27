@@ -2,7 +2,7 @@
   "name": "eanalytics-reactnative",
   "version": "1.0.0",
   "description": "ReactNative SDK for Eulerian Analytics",
-  "main": "index.js",
+  "main": "eAnalytics.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
