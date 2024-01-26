@@ -1,4 +1,4 @@
-import EAProperties from "./eaProperties";
+import EaGeneric from "./eaGeneric";
 import Helper from "../utils/helper";
 import Product from "./classes/product";
 
@@ -8,7 +8,7 @@ const KEY_AMOUNT = "amount";
 const KEY_QUANTITY = "quantity";
 const KEY_PRODUCTS = "products";
 
-class EACart extends EAProperties {
+class EACart extends EaGeneric {
   private jsonProducts: Record<string, any>;
 
   constructor(properties: any) {
@@ -16,24 +16,31 @@ class EACart extends EAProperties {
     this.jsonProducts = properties.mainJson;
   }
 
-  static Builder = class extends EAProperties.Builder {
+  static Builder = class extends EaGeneric.Builder {
     private mainJson: Record<string, any>;
 
     constructor(path: string) {
       super(path)
-      this.mainJson = {};
+      this.mainJson = [];
       super.set(KEY_SCART, "1");
     }
 
     setCartCumul(cumul: boolean) {
       super.set(KEY_CUMUL, cumul ? 1 : 0);
+      return this;
+    }
+
+    addParam(key: string, value: any) {
+      this.mainJson[key] = value;
+      return this;
     }
 
     addProduct(product: Product, amount: number, quantity: number) {
-      this.mainJson = product.getJson();
-      this.mainJson[KEY_AMOUNT] = amount;
-      this.mainJson[KEY_QUANTITY] = quantity;
-
+      const productJson = product.getJson();
+      productJson[KEY_AMOUNT] = amount;
+      productJson[KEY_QUANTITY] = quantity;
+      this.mainJson.push(productJson);
+      return this;
     }
 
     build() {

@@ -42,7 +42,7 @@ const KEY_PAGE_NEW_CUSTOMER = "newcustomer";
 
 let androidInstallReferrer: string | null = null;
 
-class EAProperties {
+class EaGeneric {
   mInternals: any;
   mPages: any;
   mProperties: any;
@@ -72,7 +72,7 @@ class EAProperties {
     }
 
     initInternalParams() {
-      this.internals["edebug"] = "on";
+      //this.internals["edebug"] = "on";
 
       this.internals[KEY_EOS] = Platform.OS === "android" ? "Android" : "" + DeviceInfo.getSystemVersion();
 
@@ -194,10 +194,10 @@ class EAProperties {
     }
 
     build() {
-      return new EAProperties(this);
+      return new EaGeneric(this);
     }
   }
 }
 
 
-export default EAProperties;
+export default EaGeneric;

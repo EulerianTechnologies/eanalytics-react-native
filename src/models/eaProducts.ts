@@ -1,11 +1,11 @@
-import EAProperties from "./eaProperties";
+import EaGeneric from "./eaGeneric";
 import Helper from "../utils/helper";
 import Product from "./classes/product";
 
 const KEY_PRODUCTS = "products";
 
 
-class EAProducts extends EAProperties {
+class EAProducts extends EaGeneric {
   mJson: any;
 
   // Dichiarazione della proprietà mJson
@@ -15,7 +15,7 @@ class EAProducts extends EAProperties {
     this.mJson = builder.mainJson;
   }
 
-  static Builder = class extends EAProperties.Builder{
+  static Builder = class extends EaGeneric.Builder{
     private mainJson: Record<string, any>;
     private jsonProducts: Record<string, any>[] = [];
 

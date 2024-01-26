@@ -7,7 +7,7 @@ import HttpHelper from "./httpHelper";
 import PersistentIdentity from "./persistentIdentity";
 import StoredPropertiesTracker from "./storedPropertiesTracker";
 import EAnalytics from "../eAnalytics";
-import EAProperties from "../models/eaProperties";
+import EaGeneric from "../models/eaGeneric";
 
 class PropertiesTracker {
     static async run(properties:any) {
@@ -16,7 +16,7 @@ class PropertiesTracker {
                 var installReferrer = await PersistentIdentity.getInstallReferrer();
                 EALog.debug("Tracking properties for the first time, add install referrer to it");
                 if (installReferrer) {
-                    EAProperties.Builder.setAndroidInstallReferrer(installReferrer);
+                    EaGeneric.Builder.setAndroidInstallReferrer(installReferrer);
                     PersistentIdentity.setInstallReferrerSent();
                 }
             }

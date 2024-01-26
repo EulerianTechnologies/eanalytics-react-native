@@ -1,8 +1,8 @@
-import EAProperties from "./eaProperties";
+import EaGeneric from "./eaGeneric";
 import Helper from "../utils/helper";
 import Product from "./classes/product";
 
-class EAEstimate extends EAProperties{
+class EAEstimate extends EaGeneric{
   mJson: any;
   constructor(builder: any) {
     super(builder);
@@ -13,7 +13,7 @@ class EAEstimate extends EAProperties{
     return this.mJson;
   }
 
-  static Builder = class extends EAProperties.Builder {
+  static Builder = class extends EaGeneric.Builder {
     mainJson: Record<string, any>;
     products: Record<string, any>;
     path: string;

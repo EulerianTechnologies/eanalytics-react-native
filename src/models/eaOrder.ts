@@ -1,7 +1,7 @@
-import EAProperties from "./eaProperties";
+import EaGeneric from "./eaGeneric";
 import Product from "./classes/product";
 
-class EAOrder extends EAProperties {
+class EAOrder extends EaGeneric {
   properties: any;
   constructor(builder: any) {
     super(builder);
@@ -11,7 +11,7 @@ class EAOrder extends EAProperties {
     return this.properties;
   }
 
-  static Builder = class extends EAProperties.Builder{
+  static Builder = class extends EaGeneric.Builder{
     properties: Record<string, any>;
     path: string;
     constructor(path: string) {
@@ -48,7 +48,7 @@ class EAOrder extends EAProperties {
     }
 
     setEstimateRef(estimateRef: string) {
-      this.properties.estimateref = estimateRef;
+      //this.properties.estimateref = estimateRef;
       return this;
     }
 

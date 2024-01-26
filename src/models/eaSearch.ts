@@ -1,46 +1,39 @@
-import EAProperties from "./eaProperties";
+import EaGeneric from "./eaGeneric";
 import Params from "./classes/params";
 
-class EASearch extends EAProperties{
-  mJson: any;
-  constructor(builder: any) {
-    super(builder);
-    this.mJson = builder.mainJson;
+class EASearch extends EaGeneric{
+  properties: any;
+
+  constructor(properties: any) {
+    super(properties);
   }
 
-  static Builder = class extends EAProperties.Builder {
-    mainJson: Record<string, any>;
-    engine: Record<string, any>;
+  static Builder = class extends EaGeneric.Builder {
+    properties: Record<string, any>;
     path: string;
     constructor(path: string) {
       super(path);
-      this.mainJson = {};
-      this.engine = {};
+      this.properties = {};
       this.path = path;
-      this.init();
-    }
-
-    init() {
-      this.set('isearchengine', this.engine);
     }
 
     set(key: string, value: any) {
-      this.mainJson[key] = value;
+      this.properties[key] = value;
       return this;
     }
 
     setName(name: string) {
-      this.engine.name = name;
+      this.properties.isearchengine = name;
       return this;
     }
 
     setResults(results: number) {
-      this.engine.results = results;
+      this.properties.isearchresults = results;
       return this;
     }
 
     setParams(params: Params) {
-      this.engine.params = params.getJson();
+      this.properties.isearchparams = params.getJson();
       return this;
     }
 

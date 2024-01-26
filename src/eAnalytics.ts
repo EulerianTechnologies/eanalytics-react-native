@@ -1,6 +1,6 @@
 import EventEmitter from "react-native/Libraries/vendor/emitter/EventEmitter";
 import EALog from "./models/eaLog";
-import EAProperties from "./models/eaProperties";
+import EaGeneric from "./models/eaGeneric";
 import Helper from "./utils/helper";
 import PersistentIdentity from "./utils/persistentIdentity";
 import ReactNativeIdfaAaid, { AdvertisingInfoResponse } from '@sparkfabrik/react-native-idfa-aaid';
@@ -99,7 +99,7 @@ class EAnalytics {
 
   }
 
-  static track(properties: EAProperties | null) {
+  static track(properties: EaGeneric | null) {
     EALog.assertCondition(sRTDomain != null, "The SDK has not been initialized. You must call EAnalytics" +
       ".init(Context, String) once.");
     if (properties == null) {
