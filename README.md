@@ -23,8 +23,8 @@ If the POST request fails, it will be stored in local storage for future retry.
 
 ## Examples
 
-EAProperties include EACart, EAEstimate, EAOrder, EAProducts, EASearch.
-Additional models are here to help building EAProperties : Action, Params, Product, Search, SiteCentric
+EaGeneric include EACart, EAEstimate, EAOrder, EACart, EAProducts, EASearch.
+
   ```javascript  
   //EAOrder
     var maVente = new EAOrder.Builder("test-path")
