@@ -17,7 +17,7 @@ It will try to sync any failed tracking attemps locally stored.
 ```  
 
 
-To track `EAProperties`, call `Eulerian.track` from anywhere in your ReactNative app.  
+To track any Eulerian Item call `Eulerian.track` from anywhere in your ReactNative app.  
 If the POST request fails, it will be stored in local storage for future retry.
 
 
@@ -191,8 +191,6 @@ let properties = new EaGeneric.Builder("the_path")
 EAnalytics.track(properties);
 ```
 
-
-EAnalytics.track(properties);
 
 ### Platform differences
 On AndroidTV the method `PersistentIdentity.getAdvertisingId()` is unsupported and won't return the device Advertise Id due to ReactNative's platform limitation.
