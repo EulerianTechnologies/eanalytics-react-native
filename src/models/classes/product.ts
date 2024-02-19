@@ -1,5 +1,3 @@
-import Helper from "../../utils/helper";
-
 const KEY_REF = "ref";
 const KEY_NAME = "name";
 const KEY_PARAMS = "params";

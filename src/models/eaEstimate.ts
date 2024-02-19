@@ -1,5 +1,4 @@
 import EaGeneric from "./eaGeneric";
-import Helper from "../utils/helper";
 import Product from "./classes/product";
 
 class EAEstimate extends EaGeneric{

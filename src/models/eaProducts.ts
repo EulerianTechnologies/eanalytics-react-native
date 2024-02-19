@@ -16,8 +16,8 @@ class EAProducts extends EaGeneric {
   }
 
   static Builder = class extends EaGeneric.Builder{
-    private mainJson: Record<string, any>;
-    private jsonProducts: Record<string, any>[] = [];
+    mainJson: Record<string, any>;
+    jsonProducts: Record<string, any>[] = [];
 
     constructor(reference: string) {
       super(reference);

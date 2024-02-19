@@ -1,5 +1,4 @@
 import EaGeneric from "./eaGeneric";
-import Helper from "../utils/helper";
 import Product from "./classes/product";
 
 const KEY_SCART = "scart";
@@ -17,7 +16,7 @@ class EACart extends EaGeneric {
   }
 
   static Builder = class extends EaGeneric.Builder {
-    private mainJson: Record<string, any>;
+    mainJson: Record<string, any>;
 
     constructor(path: string) {
       super(path)

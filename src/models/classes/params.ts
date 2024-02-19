@@ -1,6 +1,3 @@
-import Helper from "../../utils/helper";
-
-
 class Params {
   private mJson: Record<string, any>; // Dichiarazione della proprietà mJson
 
@@ -13,7 +10,7 @@ class Params {
   }
 
   static Builder = class {
-    private mainJson: Record<string, any>;
+    mainJson: Record<string, any>;
 
     constructor() {
       this.mainJson = {};

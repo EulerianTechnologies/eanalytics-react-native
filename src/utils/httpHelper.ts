@@ -1,11 +1,9 @@
-import Gzip from 'rn-gzip';
 import EALog from '../models/eaLog';
 import EAnalytics from '../eAnalytics';
 
 class HttpHelper {
     static async postData(value: string) {
         EALog.debug("-> posting data : " + value);
-        //const gzippedData = Gzip.zip(value);
         let sRTDomain = EAnalytics.getSrtDomain();
         let success = false;
 

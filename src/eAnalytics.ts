@@ -4,7 +4,7 @@ import EaGeneric from "./models/eaGeneric";
 import Helper from "./utils/helper";
 import PersistentIdentity from "./utils/persistentIdentity";
 import ReactNativeIdfaAaid, { AdvertisingInfoResponse } from '@sparkfabrik/react-native-idfa-aaid';
-import { PermissionsAndroid, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import StoredPropertiesTracker from "./utils/storedPropertiesTracker";
 import { PlayInstallReferrer } from "react-native-play-install-referrer";
 import PropertiesTracker from "./utils/propertiesTracker";
@@ -34,23 +34,6 @@ class EAnalytics {
     EALog.assertCondition(!initialized && sRTDomain == null, "Init must be called only once.");
     EALog.assertCondition(!host.includes(".eulerian.com"), "Host cannot contain '.eulerian.com'.");
 
-    /*if(Platform.OS=="android"){
-      const internetPermission = await Helper.isPermissionGranted(PermissionsAndroid.PERMISSIONS.INTERNET);
-      EALog.assertCondition(internetPermission,
-              "Init failed : permission is missing. You must add permission " +
-              PermissionsAndroid.PERMISSIONS.INTERNET + " in your app Manifest.xml.");
-
-      const accessNetworkStatePermission = await Helper.isPermissionGranted(PermissionsAndroid.PERMISSIONS.ACCESS_NETWORK_STATE);
-      EALog.assertCondition(accessNetworkStatePermission,
-              "Init failed : permission is missing: Your must add permission " + PermissionsAndroid.PERMISSIONS
-                      .ACCESS_NETWORK_STATE + " in your app Manifest.xml");
-
-      const accessWifiStatePermission = await Helper.isPermissionGranted(PermissionsAndroid.PERMISSIONS.ACCESS_WIFI_STATE);
-      EALog.assertCondition(accessWifiStatePermission,
-              "Init failed : permission is missing: Your must add permission " + PermissionsAndroid.PERMISSIONS
-                      .ACCESS_WIFI_STATE + " in your app Manifest.xml");
-                      
-    }*/
     EALog.assertCondition(Helper.isHostValid(host), "Init failed : " + host + " is not a valid host name. " +
       "For instance, test.example.net is a valid.");
 

@@ -15,7 +15,7 @@ class SiteCentricProperty {
     }
 
     set(key: string, ...values: any[]) {
-      const jsonArray = [];
+      const jsonArray:any = [];
       for (const value of values) {
         jsonArray.push(value);
       }
