@@ -103,9 +103,12 @@ To add an action to you page, when page is loaded you can use this:
       .setUID("user_id")
       .set("key", "value")
       .setAction(new Action.Builder()
-        .setReference("test-ref-\"fefds$432`^")
-        .setIn("in-test")
-        .addOut("tata", "tutu", "tete")
+        .setName("action_name") //mandatory
+        .setReference("action_ref")
+        .setMode("in/out/neat")
+        .setLabel("label1,label2,label3,label4,label5")
+        .setParam("key", "value")
+        .setParam("key", "value")
         .build())
       .build();
 
@@ -120,9 +123,12 @@ To add an action following a click on an element of your page, or following the 
     let properties = new EAProperties.Builder("page_path")
       .set("enopagedt", "1")
       .setAction(new Action.Builder()
-        .setReference("test-ref-\"fefds$432`^")
-        .setIn("in-test")
-        .addOut("tata", "tutu", "tete")
+        .setName("action_name") //mandatory
+        .setReference("action_ref")
+        .setMode("in/out/neat")
+        .setLabel("label1,label2,label3,label4,label5")
+        .setParam("key", "value")
+        .setParam("key2", "value2")
         .build())
       .build();
 
@@ -170,6 +176,7 @@ This marker allows you to retrieve the viewed pages and the visits to the produc
 ```xml
 const product1 = new Product.Builder("product_ref")
   .setName("product_name")
+  .setGroup("product_group")
   .setParams(new Params.Builder()
     .addParam("product_param1", "value")
     .addParam("product_param2", "value")
@@ -193,6 +200,7 @@ const onClickProducts = () => {
 ```xml
 const product1 = new Product.Builder("product_ref1")
   .setName("product_name")
+  .setGroup("product_group")
   .setParams(new Params.Builder()
     .addParam("product_param1", "value")
     .addParam("product_param2", "value")
@@ -203,6 +211,7 @@ const product1 = new Product.Builder("product_ref1")
 
 const product2 = new Product.Builder("product_ref2")
   .setName("product_name")
+  .setGroup("product_group")
   .setParams(new Params.Builder()
     .addParam("product_param1", "value")
     .addParam("product_param2", "value")
@@ -291,6 +300,7 @@ Eulerian Analytics allows you to cancel or validate estimates to measure the rea
 
 const product1 = new Product.Builder("product_ref1")
   .setName("product_name")
+  .setGroup("product_group")
   .setParams(new Params.Builder()
     .addParam("product_param1", "value")
     .addParam("product_param2", "value")
@@ -301,6 +311,7 @@ const product1 = new Product.Builder("product_ref1")
 
 const product2 = new Product.Builder("product_ref2")
   .setName("product_name")
+  .setGroup("product_group")
   .setParams(new Params.Builder()
     .addParam("product_param1", "value")
     .addParam("product_param2", "value")
@@ -364,7 +375,14 @@ const product2 = new Product.Builder("product_ref2")
   .build();
 
   const onClickCart = () => {
-    // Implementa la logica per l'evento onClickCart
+    var monPanier = new EACart.Builder("path-cart")
+    .setCartCumul(true)
+    .addProduct(product1, 2.52, 42) //product , amount , quantity
+    .addProduct(product2, 2.123, 4) //product , amount , quantity
+.build();
+
+
+EAnalytics.track(monPanier);
   };
 ```
 
