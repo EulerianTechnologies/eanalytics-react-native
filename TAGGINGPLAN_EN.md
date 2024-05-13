@@ -118,17 +118,18 @@ To add an action to you page, when page is loaded you can use this:
 To add an action following a click on an element of your page, or following the validation of a form, you should use this implementation
 
 ```xml
-  const onClickProperties = () => {    
 
-    let properties = new EAProperties.Builder("page_path")
-      .set("enopagedt", "1")
-      .setAction(new Action.Builder()
-        .setName("action_name") //mandatory
+let properties = new EaGeneric.Builder()
+    .setStandalone()
+      .putAction(new Action.Builder()
+      .setName("action_name") //mandatory
         .setReference("action_ref")
         .setMode("in/out/neat")
-        .setLabel("label1,label2,label3,label4,label5")
-        .setParam("key", "value")
-        .setParam("key2", "value2")
+        .setLabel("lb1,lb2,lb3")
+        .setParams(new Params.Builder()
+          .setParam("key", "value")
+          .setParam("key2", "value2")
+          .build())
         .build())
       .build();
 
