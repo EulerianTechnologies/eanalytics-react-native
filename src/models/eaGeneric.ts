@@ -60,15 +60,18 @@ class EaGeneric {
     properties: Record<string, any>;
     internals: Record<string, any>;
     pages: Record<string, any>;
-    constructor(path: string) {
+
+    constructor(path?: string) {
       this.properties = {};
       this.internals = {};
       this.pages = {};
       this.initInternalParams();
-      if (!path.startsWith('/')) {
-        path = '/' + path;
+      if (path != null) {
+        if (path.startsWith('/')) {
+          path = '/' + path;
+        }
+        this.pages.path = path;
       }
-      this.pages.path = path;
     }
 
     initInternalParams() {
@@ -131,6 +134,11 @@ class EaGeneric {
       androidInstallReferrer = value;
     }
 
+    setStandalone() {
+      this.properties["ereplay-notag"] = 1;
+      return this;
+    }
+
     setLocation(latitude: Double, longitude: Double) {
       this.pages.latitude = latitude;
       this.pages.longitude = longitude;
@@ -175,6 +183,16 @@ class EaGeneric {
     setAction(action: Action) {
       if (action) {
         this.pages.action = action.getJson();
+      }
+      return this;
+    }
+
+    putAction(action: Action) {
+      if (this.pages.actions == null) {
+        this.pages.actions = [];
+      }
+      if (action) {
+        this.pages.actions.push(action.getJson());
       }
       return this;
     }

@@ -1,3 +1,5 @@
+import Params from "./params";
+
 class Action {
   mJson: any;
   constructor(builder: any) {
@@ -10,10 +12,13 @@ class Action {
 
   static Builder = class {
     mainJson: Record<string, any>;
-    outsJson: Record<string, any>;
     constructor() {
       this.mainJson = {};
-      this.outsJson = [];
+    }
+
+    setName(name: string) {
+      this.mainJson.name = name;
+      return this;
     }
 
     setReference(ref: string) {
@@ -21,25 +26,22 @@ class Action {
       return this;
     }
 
-    setIn(inValue: string) {
-      this.mainJson.in = inValue;
+    setMode(mode: string) {
+      this.mainJson.mode = mode;
       return this;
     }
 
-    addOut(...outs: string[]) {
-      this.outsJson.push(...outs);
+    setParams(params: Params) {
+      this.mainJson.params = params.getJson();
+      return this;
+    }
+
+    setLabel(label: string) {
+      this.mainJson.label = label;
       return this;
     }
 
     build() {
-      if (this.outsJson.length > 0) {
-        this.mainJson.out = this.outsJson;
-      }
-      if (!this.mainJson.in && (!this.mainJson.out || this.mainJson.out.length === 0)) {
-        console.warn(
-          'Action: One of setIn() or addOut() method must be called to create a valid Action.'
-        );
-      }
       return new Action(this);
     }
   }

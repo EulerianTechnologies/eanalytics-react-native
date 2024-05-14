@@ -34,6 +34,23 @@ class EAnalytics {
     EALog.assertCondition(!initialized && sRTDomain == null, "Init must be called only once.");
     EALog.assertCondition(!host.includes(".eulerian.com"), "Host cannot contain '.eulerian.com'.");
 
+    /*if(Platform.OS=="android"){
+      const internetPermission = await Helper.isPermissionGranted(PermissionsAndroid.PERMISSIONS.INTERNET);
+      EALog.assertCondition(internetPermission,
+              "Init failed : permission is missing. You must add permission " +
+              PermissionsAndroid.PERMISSIONS.INTERNET + " in your app Manifest.xml.");
+
+      const accessNetworkStatePermission = await Helper.isPermissionGranted(PermissionsAndroid.PERMISSIONS.ACCESS_NETWORK_STATE);
+      EALog.assertCondition(accessNetworkStatePermission,
+              "Init failed : permission is missing: Your must add permission " + PermissionsAndroid.PERMISSIONS
+                      .ACCESS_NETWORK_STATE + " in your app Manifest.xml");
+
+      const accessWifiStatePermission = await Helper.isPermissionGranted(PermissionsAndroid.PERMISSIONS.ACCESS_WIFI_STATE);
+      EALog.assertCondition(accessWifiStatePermission,
+              "Init failed : permission is missing: Your must add permission " + PermissionsAndroid.PERMISSIONS
+                      .ACCESS_WIFI_STATE + " in your app Manifest.xml");
+                      
+    }*/
     EALog.assertCondition(Helper.isHostValid(host), "Init failed : " + host + " is not a valid host name. " +
       "For instance, test.example.net is a valid.");
 
