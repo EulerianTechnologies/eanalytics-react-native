@@ -15,6 +15,9 @@ var sRTDomain: string | null = null, sAdInfoId: string | null = null, sAdInfoIsL
 const setAdvertisingInfo = async (info: { id: any; isAdTrackingLimited: any; }) => {
   await PersistentIdentity.setValue('id', info.id);
   await PersistentIdentity.setValue('isAdTrackingLimited', JSON.stringify(info.isAdTrackingLimited));
+
+  sAdInfoId = info.id;
+  sAdInfoIsLAT = Boolean(info.isAdTrackingLimited);
 };
 
 const emitter = new EventEmitter();
@@ -34,33 +37,12 @@ class EAnalytics {
     EALog.assertCondition(!initialized && sRTDomain == null, "Init must be called only once.");
     EALog.assertCondition(!host.includes(".eulerian.com"), "Host cannot contain '.eulerian.com'.");
 
-    /*if(Platform.OS=="android"){
-      const internetPermission = await Helper.isPermissionGranted(PermissionsAndroid.PERMISSIONS.INTERNET);
-      EALog.assertCondition(internetPermission,
-              "Init failed : permission is missing. You must add permission " +
-              PermissionsAndroid.PERMISSIONS.INTERNET + " in your app Manifest.xml.");
-
-      const accessNetworkStatePermission = await Helper.isPermissionGranted(PermissionsAndroid.PERMISSIONS.ACCESS_NETWORK_STATE);
-      EALog.assertCondition(accessNetworkStatePermission,
-              "Init failed : permission is missing: Your must add permission " + PermissionsAndroid.PERMISSIONS
-                      .ACCESS_NETWORK_STATE + " in your app Manifest.xml");
-
-      const accessWifiStatePermission = await Helper.isPermissionGranted(PermissionsAndroid.PERMISSIONS.ACCESS_WIFI_STATE);
-      EALog.assertCondition(accessWifiStatePermission,
-              "Init failed : permission is missing: Your must add permission " + PermissionsAndroid.PERMISSIONS
-                      .ACCESS_WIFI_STATE + " in your app Manifest.xml");
-                      
-    }*/
     EALog.assertCondition(Helper.isHostValid(host), "Init failed : " + host + " is not a valid host name. " +
       "For instance, test.example.net is a valid.");
 
     initialized = true;
     sRTDomain = "https://" + host + "/collectorjson/-/";
-    sAdInfoId = PersistentIdentity.getAdvertisingId()!.toString();
-    sAdInfoIsLAT = Boolean(PersistentIdentity.getAdvertisingIsLat());
-    EALog.info("SDK initialized with " + host, true);
-
-
+  
     ReactNativeIdfaAaid.getAdvertisingInfo()
       .then((res: AdvertisingInfoResponse) => {
         setAdvertisingInfo(res)
@@ -68,8 +50,6 @@ class EAnalytics {
       .catch((err: any) => {
         console.log(err);
       });
-
-    this.track(null);
 
     if (Platform.OS == "android") {
       var shouldFetchInstallReferrer = await PersistentIdentity.shouldFetchInstallReferrer()
@@ -97,6 +77,10 @@ class EAnalytics {
       }
     }
 
+    EALog.info("SDK initialized with " + host, true);
+
+    this.track(null);
+
   }
 
   static track(properties: EaGeneric | null) {
@@ -117,12 +101,13 @@ class EAnalytics {
     return emitter;
   }
 
-  static getAdInfoIsLAT() {
-    return sAdInfoIsLAT;
+  static async getAdInfoIsLAT() {
+    let lat = await PersistentIdentity.getAdvertisingIsLat()
+    return Boolean(lat);
   }
 
-  static getAdInfoId() {
-    return sAdInfoId;
+  static async getAdInfoId() {
+    return await PersistentIdentity.getAdvertisingId();
   }
 }
 

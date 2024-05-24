@@ -8,8 +8,7 @@ const KEY_ADVERTISING_IS_LAT = "isLAT";
 class PersistentIdentity {
   static async getValue(key: string) {
     try {
-      const value = await AsyncStorage.getItem(key);
-      return value;
+      return await AsyncStorage.getItem(key);
     } catch (error) {
       console.error('Errore nel recupero dei dati:', error);
       return null;

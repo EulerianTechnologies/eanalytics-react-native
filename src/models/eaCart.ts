@@ -1,4 +1,5 @@
 import EaGeneric from "./eaGeneric";
+import Helper from "../utils/helper";
 import Product from "./classes/product";
 
 const KEY_SCART = "scart";
@@ -16,12 +17,18 @@ class EACart extends EaGeneric {
   }
 
   static Builder = class extends EaGeneric.Builder {
-    mainJson: Record<string, any>;
+    private mainJson: Record<string, any>;
 
     constructor(path: string) {
       super(path)
       this.mainJson = [];
       super.set(KEY_SCART, "1");
+    }
+
+    static async create(path: string) {
+      const builder = new EACart.Builder(path);
+      await builder.initInternalParams();
+      return builder;
     }
 
     setCartCumul(cumul: boolean) {

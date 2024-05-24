@@ -74,40 +74,44 @@ class EaGeneric {
       }
     }
 
-    initInternalParams() {
+    static async create(path?: string) {
+      const builder = new EaGeneric.Builder(path);
+      await builder.initInternalParams();
+      return builder;
+    }
+
+    async initInternalParams() {
       //this.internals["edebug"] = "on";
 
       this.internals[KEY_EOS] = Platform.OS === "android" ? "Android" : "" + DeviceInfo.getSystemVersion();
+      let self = this;
 
-      if (Platform.OS === "android") {
-        let self = this;
-        DeviceInfo.getManufacturer().then((manufacturer) => {
-          self.internals[KEY_EHW] = manufacturer;
-        });
-        DeviceInfo.getAndroidId().then((androidId) => {
-          self.internals[KEY_EUIDL] = androidId;
-        });
-        DeviceInfo.getMacAddress().then((mac) => {
-          self.internals[KEY_MAC] = mac;
-        });
-        //this.internals[KEY_EHW] = DeviceInfo.getManufacturer().then().getManufacturerSync() + " " + DeviceInfo.getModel();
-        //this.internals[KEY_EUIDL] = DeviceInfo.getAndroidIdSync();
-        //this.internals[KEY_MAC] = DeviceInfo.getMacAddressSync();
-        //params[KEY_SDK_VERSION] = ""; //TODO?
-        if (androidInstallReferrer) {
-          self.internals[KEY_INSTALL_REFERRER] = androidInstallReferrer;
-        }
-      } else {
+      const adInfoId = await EAnalytics.getAdInfoId();
+        this.internals[Platform.OS === "android" ? KEY_ADINFO_ID : KEY_IDFA] = adInfoId;
 
-        this.internals[KEY_EHW] = DeviceInfo.getModel();
-        this.internals[KEY_EHW_IDENTIFIER] = DeviceInfo.getDeviceId();
+        const adInfoIsLAT = await EAnalytics.getAdInfoIsLAT();
+        this.internals[Platform.OS === "android" ? KEY_ADINFO_IS_LAT : KEY_ADTRACKING_ENABLED] = adInfoIsLAT;
 
-        DeviceInfo.getUniqueId().then((uniqueId) => {
+        if (Platform.OS === "android") {
+          const manufacturer = await DeviceInfo.getManufacturer();
+          this.internals[KEY_EHW] = manufacturer;
+
+          const androidId = await DeviceInfo.getAndroidId();
+          this.internals[KEY_EUIDL] = androidId;
+
+          const mac = await DeviceInfo.getMacAddress();
+          this.internals[KEY_MAC] = mac;
+
+          if (androidInstallReferrer) {
+            this.internals[KEY_INSTALL_REFERRER] = androidInstallReferrer;
+          }
+        } else {
+          this.internals[KEY_EHW] = DeviceInfo.getModel();
+          this.internals[KEY_EHW_IDENTIFIER] = DeviceInfo.getDeviceId();
+
+          const uniqueId = await DeviceInfo.getUniqueId();
           this.internals[KEY_IDFV] = uniqueId;
-        });
-      }
-      this.internals[Platform.OS === "android" ? KEY_ADINFO_ID : KEY_IDFA] = EAnalytics.getAdInfoId();
-      this.internals[Platform.OS === "android" ? KEY_ADINFO_IS_LAT : KEY_ADTRACKING_ENABLED] = EAnalytics.getAdInfoIsLAT();
+        }
       
       /*DeviceInfo.getInstallerPackageName().then((installerPackageName) => {
         let appName = installerPackageName;

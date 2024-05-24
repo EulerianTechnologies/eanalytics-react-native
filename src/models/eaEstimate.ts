@@ -1,29 +1,38 @@
 import EaGeneric from "./eaGeneric";
+import Helper from "../utils/helper";
 import Product from "./classes/product";
 
+const KEY_AMOUNT = "amount";
+const KEY_QUANTITY = "quantity";
+
 class EAEstimate extends EaGeneric{
-  mJson: any;
+  properties: any;
   constructor(builder: any) {
     super(builder);
-    this.mJson = builder.mainJson;
   }
 
-  getJson() {
-    return this.mJson;
+  getProperties() {
+    return this.properties;
   }
 
   static Builder = class extends EaGeneric.Builder {
-    mainJson: Record<string, any>;
-    products: Record<string, any>;
+    properties: Record<string, any>;
     path: string;
     ref: string;
     constructor(path: string) {
       super(path);
-      this.mainJson = {};
-      this.products = [];
+      this.properties = {
+        products: []
+      };
       this.path = path;
       this.ref = "";
       this.init();
+    }
+
+    static async create(path: string) {
+      const builder = new EAEstimate.Builder(path);
+      await builder.initInternalParams();
+      return builder;
     }
   
     init() {
@@ -36,7 +45,7 @@ class EAEstimate extends EaGeneric{
     }
 
     set(key: string, value: any) {
-      this.mainJson[key] = value;
+      this.properties[key] = value;
       return this;
     }
   
@@ -62,14 +71,13 @@ class EAEstimate extends EaGeneric{
         );
       }
       const productJson = product.getJson();
-      productJson.amount = amount.toString();
-      productJson.quantity = quantity;
-      this.products.push(productJson);
+      productJson[KEY_AMOUNT] = amount;
+      productJson[KEY_QUANTITY] = quantity;
+      this.properties.products.push(productJson);
       return this;
     }
   
     build() {
-      this.set('products', this.products);
       return new EAEstimate(this);
     }
   }

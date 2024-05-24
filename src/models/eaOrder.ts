@@ -22,6 +22,12 @@ class EAOrder extends EaGeneric {
       this.path = path;
     }
 
+    static async create(path: string) {
+      const builder = new EAOrder.Builder(path);
+      await builder.initInternalParams();
+      return builder;
+    }
+
     setRef(ref: string) {
       this.properties.ref = ref;
       return this;

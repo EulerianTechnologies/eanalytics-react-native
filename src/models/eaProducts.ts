@@ -16,8 +16,8 @@ class EAProducts extends EaGeneric {
   }
 
   static Builder = class extends EaGeneric.Builder{
-    mainJson: Record<string, any>;
-    jsonProducts: Record<string, any>[] = [];
+    private mainJson: Record<string, any>;
+    private jsonProducts: Record<string, any>[] = [];
 
     constructor(reference: string) {
       super(reference);
@@ -26,6 +26,12 @@ class EAProducts extends EaGeneric {
       };
     }
 
+    static async create(reference: string) {
+      const builder = new EAProducts.Builder(reference);
+      await builder.initInternalParams();
+      return builder;
+    }
+    
     addProduct(product: Product) {
       this.jsonProducts.push(product.getJson());
       return this;

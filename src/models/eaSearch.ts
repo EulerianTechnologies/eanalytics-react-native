@@ -17,6 +17,12 @@ class EASearch extends EaGeneric{
       this.path = path;
     }
 
+    static async create(path: string) {
+      const builder = new EASearch.Builder(path);
+      await builder.initInternalParams();
+      return builder;
+    }
+
     set(key: string, value: any) {
       this.properties[key] = value;
       return this;
