@@ -8,9 +8,10 @@ import { Platform } from 'react-native';
 import StoredPropertiesTracker from "./utils/storedPropertiesTracker";
 import { PlayInstallReferrer } from "react-native-play-install-referrer";
 import PropertiesTracker from "./utils/propertiesTracker";
+import { EATpClick, EATpView } from "./models/eaMerchandising";
 
 
-var sRTDomain: string | null = null, sAdInfoId: string | null = null, sAdInfoIsLAT = false, initialized = false;
+var sRTDomain: string | null = null, sClickDomain: string | null = null, sViewDomain: string | null = null, sAdInfoId: string | null = null, sAdInfoIsLAT = false, initialized = false;
 
 const setAdvertisingInfo = async (info: { id: any; isAdTrackingLimited: any; }) => {
   await PersistentIdentity.setValue('id', info.id);
@@ -42,7 +43,9 @@ class EAnalytics {
 
     initialized = true;
     sRTDomain = "https://" + host + "/collectorjson/-/";
-  
+    sClickDomain = "https://" + host + "/tpclick/";
+    sViewDomain = "https://" + host + "/tpview/";
+
     ReactNativeIdfaAaid.getAdvertisingInfo()
       .then((res: AdvertisingInfoResponse) => {
         setAdvertisingInfo(res)
@@ -86,15 +89,37 @@ class EAnalytics {
   static track(properties: EaGeneric | null) {
     EALog.assertCondition(sRTDomain != null, "The SDK has not been initialized. You must call EAnalytics" +
       ".init(Context, String) once.");
-    if (properties == null) {
-      StoredPropertiesTracker.run();
-    } else {
-      PropertiesTracker.run(properties.getJson());
-    }
+
+      var eventType = null;
+
+      if (properties instanceof EATpView) {
+        eventType = "tpview";
+      } else if (properties instanceof EATpClick) {
+        eventType = "tpclick";
+      } else {
+        eventType = "generic";
+      }
+
+      EALog.info("Tracking a " + eventType + " event", true);
+        if (properties == null) {
+          StoredPropertiesTracker.run();
+        } else {
+          PropertiesTracker.run(properties, eventType);
+        }
+
+      
   }
 
   static getSrtDomain() {
     return sRTDomain;
+  }
+
+  static getSrtDomainClick() {
+    return sClickDomain;
+  }
+
+    static getSrtDomainView() {
+    return sViewDomain;
   }
 
   static getEventEmitter() {

@@ -10,7 +10,11 @@ import EAnalytics from "../eAnalytics";
 import EaGeneric from "../models/eaGeneric";
 
 class PropertiesTracker {
-    static async run(properties:any) {
+    static async run(properties:any, eventType:string) {
+        if (eventType == 'generic') {
+            properties = properties.getJson();
+        }
+
         if (Platform.OS === "android") {
             if (await PersistentIdentity.shouldSendInstallReferrer()) {
                 var installReferrer = await PersistentIdentity.getInstallReferrer();
@@ -24,8 +28,6 @@ class PropertiesTracker {
 
         var propertiesToString = JSON.stringify(properties);
 
-        EALog.debug("Tracking properties");
-
         if (await !ConnectivityHelper.isConnected()) {
             EALog.info("-> no network access. Properties is being stored and will be sent later.", true);
             FileHelper.appendLine(propertiesToString);
@@ -33,10 +35,16 @@ class PropertiesTracker {
             return;
         }
 
+        EALog.debug("Tracking properties");
+
         const storedProperties = await FileHelper.getLines();
         if (storedProperties.length == 0) {
-            EALog.debug("DEVO FARE LA CHIAMATA");
-            var success = HttpHelper.postData("[" + propertiesToString + "]");
+            var success;
+            if (eventType == 'generic') {
+                success = HttpHelper.postData("[" + propertiesToString + "]");
+            } else {
+                success = HttpHelper.getData(properties);
+            }
             if (!success) {
                 EALog.debug("-> synchronization failed. Will retry if no other pending track is found.");
                 FileHelper.appendLine(propertiesToString);

@@ -5,6 +5,8 @@ import EAnalytics from "../eAnalytics";
 import { MAX_UNZIPPED_BYTES_PER_SEND, NO_INTERNET_RETRY_DELAY_MILLIS, POST_FAILED_RETRY_DELAY_MILLIS } from "./config";
 import FileHelper from "./fileHelper";
 import HttpHelper from "./httpHelper";
+import EaGeneric from "../models/eaGeneric";
+import { EATpClick, EATpView, KEY_DYNTPVIEW } from "../models/eaMerchandising";
 
 
 
@@ -38,31 +40,57 @@ class StoredPropertiesTracker {
         while(counter < storedProperties.length) {
             const line = storedProperties[counter];
             try {
-                const lineJson = JSON.parse(line);
-                jsonArray.push(lineJson);
+                var eaValue = this.restoreEaProperties(line);
+                var success;
+                if (eaValue instanceof EATpView || eaValue instanceof EATpClick) {
+                  success = await HttpHelper.getData(eaValue);
+                    if (success) {
+                      EALog.debug('-> properties tracked !');
+                    } else {
+                      // something went wrong, will try on track() next call. This avoid infinite loop.
+                      EALog.debug('-> la sincronizzazione è fallita. Riproverà in seguito.');
+                    }
+                } else {
+                  const lineJson = JSON.parse(line);
+                  jsonArray.push(lineJson);
           
-                if (
-                  counter === storedProperties.length - 1 || // Ultimo elemento
-                  JSON.stringify(jsonArray).length + storedProperties[counter + 1].length > MAX_UNZIPPED_BYTES_PER_SEND
-                ) {
-                  // no more data OR json array is becoming too big -> send it
-                  const success = await HttpHelper.postData(JSON.stringify(jsonArray));
-                  if (success) {
-                    await FileHelper.deleteLines(jsonArray.length);
-                    jsonArray = []; // re-init in case the is still pending data.
-                    EALog.debug('-> properties tracked !');
-                  } else {
-                    // something went wrong, will try on track() next call. This avoid infinite loop.
-                    EALog.debug('-> la sincronizzazione è fallita. Riproverà in seguito.');
-                    return -1;
+                  if (
+                    counter === storedProperties.length - 1 || // Ultimo elemento
+                    JSON.stringify(jsonArray).length + storedProperties[counter + 1].length > MAX_UNZIPPED_BYTES_PER_SEND
+                  ) {
+                    // no more data OR json array is becoming too big -> send it
+                    success = await HttpHelper.postData(JSON.stringify(jsonArray));
                   }
                 }
+
+                if (success) {
+                  await FileHelper.deleteLines(jsonArray.length);
+                  jsonArray = []; // re-init in case the is still pending data.
+                  EALog.debug('-> properties tracked !');
+                } else {
+                  // something went wrong, will try on track() next call. This avoid infinite loop.
+                  EALog.debug('-> la sincronizzazione è fallita. Riproverà in seguito.');
+                  return -1;
+                }
+                
               } catch (e) {
                 EALog.error(`Errore nel codificare in JSON le proprietà: ${line}. Eccezione: ${e}`);
               }
               counter++;
         }
         return counter;
+    }
+
+    static restoreEaProperties(storedProperties:string) {
+      const data = JSON.parse(storedProperties);
+  
+    if (data.type != null && data.type === "EATpView") {
+      return EATpView.fromRawData(data);
+    } else if (data.type != null && data.type === "EATpClick") {
+      return EATpClick.fromRawData(data);
+    }
+
+    return new EaGeneric(data.path);
     }
 }
 
