@@ -191,6 +191,49 @@ let properties = new EaGeneric.Builder("the_path")
 EAnalytics.track(properties);
 ```
 
+## Merchandise tracking (EATpView / EATpClick)
+
+A dedicated **merchandise** tracking flow has been added to send impressions and clicks on product showcases, recommendation lists and similar surfaces.
+
+Two new trackable properties, modeled as subclasses of `EaGeneric`:
+
+- **EATpView** — impression events, sent on `GET /tpview/`
+- **EATpClick** — click events, sent on `GET /tpclick/`
+
+Unlike the existing events (`EACart`, `EAOrder`, `EAEstimate`, `EASearch`, `EAProducts`), which are POSTed to the standard tracking endpoint, merchandise events are sent as **GET** requests on the two new dedicated paths. They share the same offline retry mechanism as the rest of the SDK: if the request fails, the payload is stored locally and replayed on the next tracking call or on the next app launch.
+
+### What's new
+
+- New `src/models/eaMerchandising.ts` module exposing the `EATpView` and `EATpClick` models.
+- `src/utils/httpHelper.ts`: GET support added.
+- `src/utils/propertiesTracker.ts` and `src/utils/storedPropertiesTracker.ts`: per-type event routing and typed replay of locally stored events.
+- `src/eAnalytics.ts`: merchandise events are sent as GET requests on `/tpview/` and `/tpclick/`.
+
+### Example
+
+```javascript
+// Impression on a merchandise block — sent on GET /tpview/
+const view = new EATpView.Builder("homepage")
+  .setSiteName("my-site")
+  .setCampaign("summer_sale")
+  .setPlacement("banner_top")
+  .addProduct("PROD_001", 0)
+  .addProduct("PROD_002", 1)
+  .setUrl("http://eulerian.net")
+  .build();
+EAnalytics.track(view);
+
+// Click on a product inside that block — sent on GET /tpclick/
+const click = new EATpClick.Builder("homepage")
+  .setSiteName("my-site")
+  .setCampaign("summer_sale")
+  .setPlacement("banner_top")
+  .setProduct("PROD_001", 2)
+  .setUrl("http://eulerian.net")
+  .build();
+EAnalytics.track(click);
+```
+
 
 ### Platform differences
 On AndroidTV the method `PersistentIdentity.getAdvertisingId()` is unsupported and won't return the device Advertise Id due to ReactNative's platform limitation.
