@@ -118,9 +118,9 @@ class EaGeneric {
         this.internals[KEY_APPNAME] = appName;
         this.internals[KEY_URL] = "http://" + appName;
       });*/
-      let appName = "am1.eulerian.net/andrea/test";
-      this.internals[KEY_APPNAME] = appName;
-      this.internals[KEY_URL] = "http://" + appName;
+      //let appName = "am1.eulerian.net/andrea/test";
+      this.internals[KEY_APPNAME] = DeviceInfo.getBundleId();
+      this.internals[KEY_URL] = "http://" + DeviceInfo.getBundleId();
       this.internals[KEY_EPOCH] = Math.floor(Date.now() / 1000);
 
       this.internals[KEY_APP_VERSION_CODE] = DeviceInfo.getBuildNumber();
