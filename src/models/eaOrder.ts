@@ -54,7 +54,7 @@ class EAOrder extends EaGeneric {
     }
 
     setEstimateRef(estimateRef: string) {
-      //this.properties.estimateref = estimateRef;
+      this.properties.estimateref = estimateRef;
       return this;
     }
 
