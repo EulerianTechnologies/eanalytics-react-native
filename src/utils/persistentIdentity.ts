@@ -25,7 +25,7 @@ class PersistentIdentity {
   }
 
   static async shouldFetchInstallReferrer() {
-    const value = this.getValue(INSTALL_REFERRER_HAS_ALREADY_BEEN_SENT_ONCE);
+    const value = await this.getValue(INSTALL_REFERRER_HAS_ALREADY_BEEN_SENT_ONCE);
     return value != null && Boolean(value);
   }
 
