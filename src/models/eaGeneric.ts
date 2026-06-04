@@ -67,7 +67,7 @@ class EaGeneric {
       this.pages = {};
       this.initInternalParams();
       if (path != null) {
-        if (path.startsWith('/')) {
+        if (!path.startsWith('/')) {
           path = '/' + path;
         }
         this.pages.path = path;
