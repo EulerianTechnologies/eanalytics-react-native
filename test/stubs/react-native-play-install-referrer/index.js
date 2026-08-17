@@ -1,0 +1,1 @@
+module.exports={PlayInstallReferrer:{getInstallReferrerInfo:(cb)=>cb({installReferrer:null},null)}};

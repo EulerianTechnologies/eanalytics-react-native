@@ -1,0 +1,1 @@
+export declare const Platform:{OS:string};export declare const PermissionsAndroid:{check(p:any):Promise<boolean>};export type Permission=string;

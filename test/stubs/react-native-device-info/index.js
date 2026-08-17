@@ -1,0 +1,1 @@
+const D={getSystemVersion:()=>"17.0",getManufacturer:async()=>"stub",getAndroidId:async()=>"aid",getMacAddress:async()=>"mac",getModel:()=>"iPhone",getDeviceId:()=>"iPhone14,2",getUniqueId:async()=>"uid",getBundleId:()=>"com.stub.app",getBuildNumber:()=>"1",getVersion:()=>"1.0.0"};module.exports=D;module.exports.default=D;

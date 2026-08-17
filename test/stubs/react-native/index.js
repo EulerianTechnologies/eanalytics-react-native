@@ -1,0 +1,1 @@
+const Platform={OS:process.env.STUB_OS||"ios"};const PermissionsAndroid={check:async()=>true};module.exports={Platform,PermissionsAndroid};

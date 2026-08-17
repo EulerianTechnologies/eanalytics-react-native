@@ -1,0 +1,1 @@
+declare const S:{getItem(k:string):Promise<string|null>;setItem(k:string,v:string):Promise<void>};export default S;

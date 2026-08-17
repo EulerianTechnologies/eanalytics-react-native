@@ -1,0 +1,17 @@
+{
+  "name": "eanalytics-reactnative-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline-queue scenarios for the SDK, run on plain Node with stubbed native modules.",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node scenarios.js"
+  },
+  "devDependencies": {
+    "typescript": "4.8.4"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

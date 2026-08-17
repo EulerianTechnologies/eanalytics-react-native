@@ -1,0 +1,1 @@
+declare const NetInfo:{fetch():Promise<{isConnected:boolean}>};export default NetInfo;

@@ -1,0 +1,1 @@
+const R={getAdvertisingInfo:async()=>({id:"stub-adid",isAdTrackingLimited:false})};module.exports=R;module.exports.default=R;

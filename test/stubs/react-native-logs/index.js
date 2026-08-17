@@ -1,0 +1,1 @@
+const on=!!process.env.STUB_VERBOSE;const s=l=>m=>{if(on)console.log("["+l+"] "+m)};const logger={createLogger:()=>({debug:s("debug"),info:s("info"),warn:s("warn"),error:s("error")})};module.exports={logger};

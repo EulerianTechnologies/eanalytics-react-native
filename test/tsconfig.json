@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "rootDir": "..",
+    "outDir": "build",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["stubs/*"]
+    }
+  },
+  "include": ["../src/**/*.ts"]
+}

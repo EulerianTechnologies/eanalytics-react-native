@@ -1,0 +1,1 @@
+export declare const PlayInstallReferrer:{getInstallReferrerInfo(cb:(i:any,e:any)=>void):void};

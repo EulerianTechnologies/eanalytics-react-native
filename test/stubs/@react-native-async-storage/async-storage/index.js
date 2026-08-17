@@ -1,0 +1,1 @@
+const m={};const S={getItem:async k=>(k in m?m[k]:null),setItem:async(k,v)=>{m[k]=v}};module.exports=S;module.exports.default=S;

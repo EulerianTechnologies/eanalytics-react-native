@@ -1,0 +1,1 @@
+export declare const logger:{createLogger():{debug(m:any):void;info(m:any):void;warn(m:any):void;error(m:any):void}};

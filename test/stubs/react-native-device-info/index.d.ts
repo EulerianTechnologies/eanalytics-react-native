@@ -1,0 +1,1 @@
+declare const D:any;export default D;

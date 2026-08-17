@@ -1,0 +1,1 @@
+export interface AdvertisingInfoResponse{id:any;isAdTrackingLimited:any}declare const R:{getAdvertisingInfo():Promise<AdvertisingInfoResponse>};export default R;
