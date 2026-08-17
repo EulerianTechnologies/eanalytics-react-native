@@ -38,21 +38,22 @@ class EATpView extends EaGeneric {
       this._tpviewProducts = builder._tpviewProducts;
     }
 
+  // rawData is the JSON of a stored EATpView instance, so the fields are read back from
+  // the instance itself: KEY_DYNTPVIEW is written by build() as a positional array and
+  // cannot be mapped back to the named setters.
   static fromRawData(rawData: any): EATpView {
-    const props = rawData.properties[KEY_DYNTPVIEW];
-    const builder = new EATpView.Builder(rawData.path || "");
+    const pages = rawData.mPages || {};
+    const builder = new EATpView.Builder(rawData.path || pages.path || "");
 
-    if (props && typeof props === 'object') {
-      if (props.siteName) builder.setSiteName(props.siteName);
-      if (props.campaign) builder.setCampaign(props.campaign);
-      if (props.placement) builder.setPlacement(props.placement);
-      if (props.publisher) builder.setPublisher(props.publisher);
-      if (props.media) builder.setMedia(props.media);
-      if (props.category) builder.setCategory(props.category);
-      if (props.url) builder.setUrl(props.url);
-    }
+    if (rawData._siteName) builder.setSiteName(rawData._siteName);
+    if (rawData._campaignName) builder.setCampaign(rawData._campaignName);
+    if (rawData._placement) builder.setPlacement(rawData._placement);
+    if (rawData._publisher) builder.setPublisher(rawData._publisher);
+    if (rawData._media) builder.setMedia(rawData._media);
+    if (rawData._category) builder.setCategory(rawData._category);
+    if (rawData._url) builder.setUrl(rawData._url);
 
-    const products = rawData.properties[KEY_TPVIEWPRD];
+    const products = rawData._tpviewProducts;
     if (Array.isArray(products)) {
       products.forEach(([ref, pos]) => builder.addProduct(ref, pos));
     }
@@ -188,22 +189,22 @@ class EATpClick extends EaGeneric {
     super(builder);
   }
 
+  // same as EATpView.fromRawData: restored from the serialized instance fields, not from
+  // the positional KEY_DYNTPCLICK array written by build().
   static fromRawData(rawData: any): EATpClick {
-    const props = rawData.properties[KEY_DYNTPCLICK];
-    const builder = new EATpClick.Builder(rawData.path || "");
+    const pages = rawData.mPages || {};
+    const builder = new EATpClick.Builder(rawData.path || pages.path || "");
 
-    if (props && typeof props === 'object') {
-      if (props.siteName) builder.setSiteName(props.siteName);
-      if (props.campaign) builder.setCampaign(props.campaign);
-      if (props.placement) builder.setPlacement(props.placement);
-      if (props.publisher) builder.setPublisher(props.publisher);
-      if (props.media) builder.setMedia(props.media);
-      if (props.category) builder.setCategory(props.category);
-      if (props.url) builder.setUrl(props.url);
-    }
+    if (rawData._siteName) builder.setSiteName(rawData._siteName);
+    if (rawData._campaignName) builder.setCampaign(rawData._campaignName);
+    if (rawData._placement) builder.setPlacement(rawData._placement);
+    if (rawData._publisher) builder.setPublisher(rawData._publisher);
+    if (rawData._media) builder.setMedia(rawData._media);
+    if (rawData._category) builder.setCategory(rawData._category);
+    if (rawData._url) builder.setUrl(rawData._url);
 
-    const product = rawData.properties[KEY_TPCLICKPRODUCT];
-    if (typeof product === 'object') {
+    const product = rawData._product;
+    if (product && typeof product === 'object') {
       builder.setProduct(product.ref, product.position, product.totalProducts);
     }
 

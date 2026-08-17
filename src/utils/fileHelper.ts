@@ -20,32 +20,28 @@ class FileHelper {
     }
   }
 
-  static deleteLines(numberOfLineToDelete: number) {
-    RNFS.readFile(FILE_PATH, 'utf8')
-      .then((currentContent) => {
+  static async deleteLines(numberOfLineToDelete: number) {
+    try {
+      const currentContent = await RNFS.readFile(FILE_PATH, 'utf8');
 
-        const lines = currentContent.split(SEPARATOR);
-        lines.splice(0, numberOfLineToDelete);
-        const newContent = lines.join(SEPARATOR);
+      const lines = currentContent.split(SEPARATOR);
+      lines.splice(0, numberOfLineToDelete);
+      const newContent = lines.join(SEPARATOR);
 
-        return RNFS.writeFile(FILE_PATH, newContent, 'utf8');
-      })
-      .then(() => {
-        EALog.debug('Deleted ' + numberOfLineToDelete + " lines.");
-      })
-      .catch((error) => {
-        EALog.error('Unable to delete lines');
-      });
+      await RNFS.writeFile(FILE_PATH, newContent, 'utf8');
+      EALog.debug('Deleted ' + numberOfLineToDelete + " lines.");
+    } catch (error) {
+      EALog.error('Unable to delete lines');
+    }
   }
 
-  static appendLine(newLine: string) {
-    RNFS.writeFile(FILE_PATH, newLine.concat(SEPARATOR), 'utf8')
-      .then((success) => {
-        console.log('FILE WRITTEN!');
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+  static async appendLine(newLine: string) {
+    try {
+      await RNFS.appendFile(FILE_PATH, newLine.concat(SEPARATOR), 'utf8');
+      EALog.debug('Line appended to the stored properties.');
+    } catch (error) {
+      EALog.error('Unable to append line: ' + error);
+    }
   }
 
 }

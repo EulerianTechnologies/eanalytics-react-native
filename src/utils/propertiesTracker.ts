@@ -28,9 +28,9 @@ class PropertiesTracker {
 
         var propertiesToString = JSON.stringify(properties);
 
-        if (await !ConnectivityHelper.isConnected()) {
+        if (!(await ConnectivityHelper.isConnected())) {
             EALog.info("-> no network access. Properties is being stored and will be sent later.", true);
-            FileHelper.appendLine(propertiesToString);
+            await FileHelper.appendLine(propertiesToString);
             EAnalytics.getEventEmitter().emit("message_retry", NO_INTERNET_RETRY_DELAY_MILLIS);
             return;
         }
@@ -41,13 +41,13 @@ class PropertiesTracker {
         if (storedProperties.length == 0) {
             var success;
             if (eventType == 'generic') {
-                success = HttpHelper.postData("[" + propertiesToString + "]");
+                success = await HttpHelper.postData("[" + propertiesToString + "]");
             } else {
-                success = HttpHelper.getData(properties);
+                success = await HttpHelper.getData(properties);
             }
             if (!success) {
                 EALog.debug("-> synchronization failed. Will retry if no other pending track is found.");
-                FileHelper.appendLine(propertiesToString);
+                await FileHelper.appendLine(propertiesToString);
                 EAnalytics.getEventEmitter().emit("message_retry", POST_FAILED_RETRY_DELAY_MILLIS);
             } else {
                 EALog.info("-> properties tracked !", true);
@@ -57,9 +57,9 @@ class PropertiesTracker {
 
         EALog.debug("-> " + storedProperties.length + " stored properties found, current properties added to history to " +
                 "be sent with stored ones.");
-        FileHelper.appendLine(propertiesToString);//we treat the current properties as a stored properties (history)
+        await FileHelper.appendLine(propertiesToString);//we treat the current properties as a stored properties (history)
 
-        StoredPropertiesTracker.run();
+        await StoredPropertiesTracker.run();
     }
 }
 
